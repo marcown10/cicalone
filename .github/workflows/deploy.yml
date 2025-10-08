@@ -21,6 +21,21 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
       
+      - name: Detect project directory
+        id: detect_dir
+        shell: bash
+        run: |
+          set -e
+          FIRST=$(git ls-files 'pnpm-lock.yaml' 'package.json' | head -n 1 || true)
+          if [ -z "$FIRST" ]; then
+            echo "dir=." >> $GITHUB_OUTPUT
+            echo "artifact='dist'" >> $GITHUB_OUTPUT
+          else
+            DIR=$(dirname "$FIRST")
+            echo "dir=$DIR" >> $GITHUB_OUTPUT
+            echo "artifact="$DIR/dist"" >> $GITHUB_OUTPUT
+          fi
+      
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
@@ -31,11 +46,13 @@ jobs:
         run: corepack enable
       
       - name: Install dependencies
+        working-directory: ${{ steps.detect_dir.outputs.dir }}
         run: |
           corepack prepare pnpm@latest --activate
           pnpm install --frozen-lockfile
       
       - name: Build project
+        working-directory: ${{ steps.detect_dir.outputs.dir }}
         run: npm run build
 
       
@@ -45,7 +62,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: 'dist'
+          path: ${{ steps.detect_dir.outputs.artifact }}
   
   deploy:
     environment:
