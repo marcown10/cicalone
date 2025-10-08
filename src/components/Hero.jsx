@@ -1,82 +1,167 @@
 import styled, { keyframes, css } from 'styled-components'
+import { FaGithub, FaTwitter, FaLinkedin } from 'react-icons/fa'
 
-const fadeIn = keyframes`
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
+const slideIn = keyframes`
+  from { transform: translateX(-100px); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
 `
 
 const HeroSection = styled.section`
-  min-height: 80vh;
+  min-height: 100vh;
   display: flex;
   align-items: center;
-  background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
+  background: linear-gradient(135deg, #0a1930 0%, #1a365d 100%);
   padding: 2rem;
   position: relative;
   overflow: hidden;
-
-  &::after {
-    content: '';
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    background: linear-gradient(45deg, rgba(74, 144, 226, 0.1) 0%, rgba(99, 179, 237, 0.1) 100%);
-    pointer-events: none;
-  }
 `
 
 const Content = styled.div`
   max-width: 1200px;
   margin: 0 auto;
-  color: white;
-  ${css`animation: ${fadeIn} 1s ease-out;`}
-  z-index: 1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  align-items: center;
+  
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+`
+
+const TextContent = styled.div`
+  ${css`animation: ${slideIn} 1s ease-out;`}
 `
 
 const Title = styled.h1`
-  font-size: clamp(3rem, 8vw, 5rem);
-  margin-bottom: 1rem;
-  background: linear-gradient(45deg, #4a90e2, #63b3ed);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  color: white;
+  margin-bottom: 1.5rem;
   line-height: 1.2;
+  
+  span {
+    background: linear-gradient(45deg, #4a90e2, #63b3ed);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
 `
 
 const Subtitle = styled.p`
-  font-size: clamp(1.2rem, 3vw, 1.5rem);
+  font-size: clamp(1.1rem, 2vw, 1.3rem);
+  color: #a0aec0;
   margin-bottom: 2rem;
-  color: #9ca3af;
-  max-width: 600px;
+  line-height: 1.6;
 `
 
-const Button = styled.a`
+const ButtonGroup = styled.div`
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  
+  @media (max-width: 768px) {
+    justify-content: center;
+  }
+`
+
+const PrimaryButton = styled.a`
   display: inline-block;
   padding: 1rem 2rem;
   background: #4a90e2;
   color: white;
   text-decoration: none;
   border-radius: 8px;
-  font-weight: bold;
+  font-weight: 600;
   transition: all 0.3s ease;
 
   &:hover {
     transform: translateY(-2px);
+    background: #357abd;
     box-shadow: 0 4px 12px rgba(74, 144, 226, 0.3);
   }
+`
+
+const SecondaryButton = styled(PrimaryButton)`
+  background: transparent;
+  border: 2px solid #4a90e2;
+  
+  &:hover {
+    background: rgba(74, 144, 226, 0.1);
+  }
+`
+
+const SocialLinks = styled.div`
+  display: flex;
+  gap: 1.5rem;
+  
+  @media (max-width: 768px) {
+    justify-content: center;
+  }
+`
+
+const SocialIcon = styled.a`
+  color: #a0aec0;
+  font-size: 1.5rem;
+  transition: all 0.3s ease;
+  
+  &:hover {
+    color: #4a90e2;
+    transform: translateY(-2px);
+  }
+`
+
+const ImageContainer = styled.div`
+  position: relative;
+  ${css`animation: ${slideIn} 1s ease-out 0.3s backwards;`}
+  
+  @media (max-width: 768px) {
+    display: none;
+  }
+`
+
+const HeroImage = styled.img`
+  width: 100%;
+  height: auto;
+  border-radius: 12px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
 `
 
 const Hero = () => {
   return (
     <HeroSection>
       <Content>
-        <Title>Marco Bruno</Title>
-        <Subtitle>
-          Exploring the intersection of technology, design, and creative development. 
-          Join me on this journey of continuous learning and innovation.
-        </Subtitle>
-        <Button href="#features">Discover More</Button>
+        <TextContent>
+          <Title>
+            Ciao, sono <span>Marco Bruno</span>
+          </Title>
+          <Subtitle>
+            Full Stack Developer specializzato in React e Node.js. 
+            Creo soluzioni web innovative e scalabili, 
+            con un focus sulla user experience e le best practices.
+          </Subtitle>
+          <ButtonGroup>
+            <PrimaryButton href="#projects">View Projects</PrimaryButton>
+            <SecondaryButton href="#contact">Contact Me</SecondaryButton>
+          </ButtonGroup>
+          <SocialLinks>
+            <SocialIcon href="https://github.com/marcown10" target="_blank">
+              <FaGithub />
+            </SocialIcon>
+            <SocialIcon href="https://twitter.com/marcobruno" target="_blank">
+              <FaTwitter />
+            </SocialIcon>
+            <SocialIcon href="https://linkedin.com/in/marcobruno" target="_blank">
+              <FaLinkedin />
+            </SocialIcon>
+          </SocialLinks>
+        </TextContent>
+        <ImageContainer>
+          <HeroImage 
+            src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=800" 
+            alt="Developer workspace"
+          />
+        </ImageContainer>
       </Content>
     </HeroSection>
   )
