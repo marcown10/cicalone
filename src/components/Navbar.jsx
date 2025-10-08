@@ -1,5 +1,6 @@
 import styled from 'styled-components'
 import { useState, useEffect } from 'react'
+import { Link, useLocation } from 'react-router-dom'
 
 const Nav = styled.nav`
   position: fixed;
@@ -21,7 +22,7 @@ const Container = styled.div`
   align-items: center;
 `
 
-const Logo = styled.a`
+const Logo = styled(Link)`
   color: white;
   text-decoration: none;
   font-size: 1.5rem;
@@ -38,22 +39,39 @@ const NavLinks = styled.div`
   gap: 2rem;
 `
 
-const NavLink = styled.a`
+const NavLink = styled(Link)`
   color: white;
   text-decoration: none;
   font-weight: 500;
   transition: all 0.3s ease;
   padding: 0.5rem 1rem;
   border-radius: 6px;
+  position: relative;
 
-  &:hover {
-    background: rgba(74, 144, 226, 0.1);
+  &:after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 2px;
+    background: #4a90e2;
+    transition: width 0.3s ease;
+  }
+
+  &:hover, &.active {
     color: #4a90e2;
+    
+    &:after {
+      width: 80%;
+    }
   }
 `
 
 const Navbar = () => {
   const [scrolled, setScrolled] = useState(false)
+  const location = useLocation()
 
   useEffect(() => {
     const handleScroll = () => {
@@ -67,11 +85,17 @@ const Navbar = () => {
   return (
     <Nav scrolled={scrolled}>
       <Container>
-        <Logo href="#">MB</Logo>
+        <Logo to="/">MB</Logo>
         <NavLinks>
-          <NavLink href="#features">Skills</NavLink>
-          <NavLink href="#blog">Blog</NavLink>
-          <NavLink href="#contact">Contact</NavLink>
+          <NavLink to="/skills" className={location.pathname === '/skills' ? 'active' : ''}>
+            Skills
+          </NavLink>
+          <NavLink to="/blog" className={location.pathname === '/blog' ? 'active' : ''}>
+            Blog
+          </NavLink>
+          <NavLink to="/contact" className={location.pathname === '/contact' ? 'active' : ''}>
+            Contact
+          </NavLink>
         </NavLinks>
       </Container>
     </Nav>
