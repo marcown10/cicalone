@@ -27,8 +27,28 @@ jobs:
           node-version: '18'
           cache: 'npm'
       
-      - name: Install dependencies
+      - name: Enable Corepack
+        run: corepack enable
+      
+      - name: Install dependencies (pnpm)
+        if: ${{ hashFiles('**/pnpm-lock.yaml') != '' }}
+        run: |
+          corepack prepare pnpm@latest --activate
+          pnpm install --frozen-lockfile
+      
+      - name: Install dependencies (yarn)
+        if: ${{ hashFiles('**/yarn.lock') != '' }}
+        run: |
+          corepack prepare yarn@stable --activate
+          yarn install --frozen-lockfile
+      
+      - name: Install dependencies (npm ci)
+        if: ${{ hashFiles('**/package-lock.json') != '' || hashFiles('**/npm-shrinkwrap.json') != '' }}
         run: npm ci
+      
+      - name: Install dependencies (npm)
+        if: ${{ hashFiles('**/pnpm-lock.yaml') == '' && hashFiles('**/yarn.lock') == '' && hashFiles('**/package-lock.json') == '' && hashFiles('**/npm-shrinkwrap.json') == '' }}
+        run: npm install
       
       - name: Build project
         run: npm run build
