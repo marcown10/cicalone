@@ -1,5 +1,6 @@
 import styled from 'styled-components'
 import { FaGithub, FaTwitter, FaLinkedin, FaHeart } from 'react-icons/fa'
+import { Link } from 'react-router-dom'
 
 const FooterSection = styled.footer`
   background: #0a1930;
@@ -113,9 +114,9 @@ const Footer = () => {
           <Column>
             <h4>Quick Links</h4>
             <LinkList>
-              <LinkItem><a href="#features">Skills</a></LinkItem>
-              <LinkItem><a href="#blog">Blog</a></LinkItem>
-              <LinkItem><a href="#contact">Contact</a></LinkItem>
+              <LinkItem><Link to="/skills">Skills</Link></LinkItem>
+              <LinkItem><Link to="/blog">Blog</Link></LinkItem>
+              <LinkItem><Link to="/contact">Contact</Link></LinkItem>
             </LinkList>
           </Column>
           <Column>
