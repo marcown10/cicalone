@@ -1,6 +1,7 @@
 import styled from 'styled-components'
 import { useState, useEffect } from 'react'
 import { Link, useLocation } from 'react-router-dom'
+import { FaHome } from 'react-icons/fa'
 
 const Nav = styled.nav`
   position: fixed;
@@ -28,6 +29,9 @@ const Logo = styled(Link)`
   font-size: 1.5rem;
   font-weight: bold;
   transition: transform 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 
   &:hover {
     transform: translateY(-2px);
@@ -85,7 +89,9 @@ const Navbar = () => {
   return (
     <Nav scrolled={scrolled}>
       <Container>
-        <Logo to="/">MB</Logo>
+        <Logo to="/">
+          <FaHome /> Home
+        </Logo>
         <NavLinks>
           <NavLink to="/skills" className={location.pathname === '/skills' ? 'active' : ''}>
             Skills
